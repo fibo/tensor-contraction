@@ -1,0 +1,33 @@
+{
+  "name": "tensor-contraction",
+  "description": "implements tensor contraction on a single mixed tensor",
+  "version": "0.0.0",
+  "homepage": "http://npm.im/tensor-contraction",
+  "author": {
+    "name": "Gianluca Casati",
+    "url": "http://g14n.info"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
+    "lint": "standard",
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fibo/tensor-contraction.git"
+  },
+  "keywords": [
+    "math",
+    "tensor"
+  ],
+  "bugs": {
+    "url": "https://github.com/fibo/tensor-contraction/issues"
+  },
+  "devDependencies": {
+    "standard": "^5.4.1",
+    "tape": "^4.3.0"
+  },
+  "dependencies": {}
+}
