@@ -37,6 +37,18 @@ function addition (a, b) { return a + b }
 var contraction = tensorContraction.bind(null, addition)
 ```
 
+# Matrix trace
+
+The [trace of a matrix](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) is the sum of the components in its diagonal. It is the simplest
+example of [tensor contraction][1].
+In the following example, the trace is `1 + 5 + 9 = 15`
+
+```
+contraction([0, 1], [3, 3], [1, 2, 3,
+                             4, 5, 6,
+                             7, 8, 9]).should.be.eql(15)
+```
+
 # Indices pair check
 
 It is required that indices chosen for contraction have the same dimension.
