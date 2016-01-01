@@ -12,12 +12,16 @@ npm install tensor-contraction --save
 
 ## Usage
 
-Signature is `(addition, tensorData, indicesPair)` where
+Signature is `(addition, indicesPair, tensorDim, tensorData)` where
 * **addition** is a function that defines the scalar operator used
-* **tensorData** is an array that defines the tensor components
 * **indicesPair** is an array of two elements that indicates which indices will be used for contraction
+* **tensorDim** is an array that defines tensor indices set
+* **tensorData** is an array that defines the tensor components
 
 It returns the **contractedTensorData** array given by the [tensors contraction][1].
+
+It throws a **TypeError**: *Contraction indices does not have the same dimension*.
+See [indices pair check](#indices-pair-check) example.
 
 ## Examples
 
@@ -29,7 +33,23 @@ Let's use common real addition.
 var tensorContraction = require('tensor-contraction')
 
 function addition (a, b) { return a + b }
+
+var contraction = tensorContraction.bind(null, addition)
 ```
+
+# Indices pair check
+
+It is required that indices chosen for contraction have the same dimension.
+The following example
+
+```
+contraction([0, 1], [3, 2], [1, 2, 3,
+                             4, 5, 6])
+```
+
+will throw with message
+
+> Contraction indices does not have the same dimension: 0-th index = 3 but 1-th index = 2
 
 ## License
 
