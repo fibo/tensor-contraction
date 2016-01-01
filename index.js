@@ -23,7 +23,7 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
   var dim1 = tensorDim[i1]
 
   if (dim0 !== dim1) {
-    throw new TypeError('Contraction indices does not have the same dimension: ' + i0 + '-th index = ' + dim0 + ' but ' + i1 + '-th index = ' + dim1)
+    throw new TypeError('Contraction indices does not have the same dimension: ' + i0 + '-th index = ' + dim0 + ' but ' + i1 + '-th index = ' + dim1 + '.')
   }
 
   var tensorOrder = tensorDim.length
@@ -40,7 +40,6 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
     firstCombination.splice(i1, 0, 0)
 
     var firstIndex = multiDimArrayIndex(tensorDim, firstCombination)
-    console.log(firstCombination)
 
     var result = tensorData[firstIndex]
 
