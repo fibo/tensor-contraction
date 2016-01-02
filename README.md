@@ -66,19 +66,22 @@ will throw with message
 # Generic example
 
 Consider a tensor of order 3 and contract pairing first and last index.
+A multidimensional array **t** is used to point out which component corresponds
+to a given combination of indices, but keep in mind that tensors are always
+given as a monodimensional array.
 Note that contracted tensor is a vector with two elements, where the first one is given
 by the sum of the tensor components with middle index equal to 0 and the second one
 is given by the sum of tensor components with middle index equal to 1.
 
 ```
-var t = [[[[0], [1]], [[2], [3]]],[[[4], [5]], [[6], [7]]]] // t[0][0][0] = 0
-                                                            // t[0][0][1] = 1
-                                                            // t[0][1][0] = 2
-                                                            // t[0][1][1] = 3
-                                                            // t[1][0][0] = 4
-                                                            // t[1][0][1] = 5
-                                                            // t[1][1][0] = 6
-                                                            // t[1][1][1] = 7
+var t = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] // t[0][0][0] = 0
+                                             // t[0][0][1] = 1
+                                             // t[0][1][0] = 2
+                                             // t[0][1][1] = 3
+                                             // t[1][0][0] = 4
+                                             // t[1][0][1] = 5
+                                             // t[1][1][0] = 6
+                                             // t[1][1][1] = 7
 
 contraction([0, 2], [2, 2, 2], [t[0][0][0], t[0][0][1], t[0][1][0]. t[0][1][1],  // [10, 18] = [0 + 1 + 4 + 5, 2 + 3 + 6 + 7] =
                                 t[0][0][0], t[0][0][1], t[0][1][0]. t[0][1][1]]) //          = [t[0][0][0] + t[0][0][1] + t[1][0][0] + t[1][0][1],
