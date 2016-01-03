@@ -63,15 +63,16 @@ will throw with message
 
 > Contraction indices does not have the same dimension: 0-th index = 3 but 1-th index = 2.
 
-# Generic example
+# Order 3
 
 Consider a tensor of order 3 and contract pairing first and last index.
 A multidimensional array **t** is used to point out which component corresponds
 to a given combination of indices, but keep in mind that tensors are always
 given as a monodimensional array.
-Note that contracted tensor is a vector with two elements, where the first one is given
-by the sum of the tensor components with middle index equal to 0 and the second one
-is given by the sum of tensor components with middle index equal to 1.
+Note that contracted tensor is a vector with two elements, where:
+
+1. the first one is given by the sum of the tensor components with middle index equal to 0 and with first and last index equals;
+2. the second one is given by the sum of tensor components with middle index equal to 1 and with first and last index equals.
 
 ```
 var t = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] // t[0][0][0] = 0
@@ -83,9 +84,18 @@ var t = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]] // t[0][0][0] = 0
                                              // t[1][1][0] = 6
                                              // t[1][1][1] = 7
 
-contraction([0, 2], [2, 2, 2], [t[0][0][0], t[0][0][1], t[0][1][0]. t[0][1][1],  // [10, 18] = [0 + 1 + 4 + 5, 2 + 3 + 6 + 7] =
-                                t[0][0][0], t[0][0][1], t[0][1][0]. t[0][1][1]]) //          = [t[0][0][0] + t[0][0][1] + t[1][0][0] + t[1][0][1],
-                                                                                 //             t[0][1][0] + t[0][1][1] + t[1][1][0] + t[1][1][1]]
+contraction([0, 2], [2, 2, 2], [t[0][0][0], t[0][0][1], t[0][1][0], t[0][1][1],  // [5, 9] = [0 + 5, 2 + 7] =
+                                t[1][0][0], t[1][0][1], t[1][1][0], t[1][1][1]]) //        = [t[0][0][0] + t[1][0][1],
+                                                                                 //           t[0][1][0] + t[1][1][1]]
+```
+
+Follows calculation of other 2 possible contractions, where the *tensorData* is
+given by explicit numeric values.
+
+```
+contraction([0, 1], [2, 2, 2], [0, 1, 2, 3, 4, 5, 6, 7]) // [6, 8]
+
+contraction([1, 2], [2, 2, 2], [0, 1, 2, 3, 4, 5, 6, 7]) // [3, 11]
 ```
 
 ## License

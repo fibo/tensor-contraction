@@ -25,9 +25,6 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
       p0 + '-th index = ' + dim0 + ' but ' + p1 + '-th index = ' + dim1 + '.')
   }
 
-  var contractedTensorData = null
-  var tensorOrder = tensorDim.length
-
   function varyingTensorDim (result, element, index) {
     if ((index !== p0) && (index !== p1)) {
       result.push(element)
@@ -68,7 +65,7 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
   // so it makes sense to return an element, not an array.
   // Furthermore, varyingTensorDim will be an empty array so generic algorithm
   // will not even be triggered. Then it will be simply computed the trace.
-  if (tensorOrder === 2) {
+  if (tensorDim.length === 2) {
     var trace = tensorData[0]
 
     for (var i = 1; i < dim0; i++) {
@@ -77,14 +74,12 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
       trace = addition(trace, tensorData[index])
     }
 
-    contractedTensorData = trace
+    return trace
   } else {
-    contractedTensorData = tensorDim.reduce(varyingTensorDim, [])
-                                    .reduce(indicesPermutations, [])
-                                    .reduce(sumOverVarying(tensorData), [])
+    return tensorDim.reduce(varyingTensorDim, [])
+                    .reduce(indicesPermutations, [])
+                    .reduce(sumOverVarying(tensorData), [])
   }
-
-  return contractedTensorData
 }
 
 module.exports = tensorContraction
