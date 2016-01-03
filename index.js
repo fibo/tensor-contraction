@@ -12,7 +12,6 @@ var multiDimArrayIndex = require('multidim-array-index')
  */
 
 function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
-  console.log(arguments)
   // Sort indices pair, otherwise algorithm gets unnecessary complicated.
   indicesPair.sort()
 
@@ -22,71 +21,70 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
   var dim1 = tensorDim[p1]
 
   if (dim0 !== dim1) {
-    throw new TypeError('Contraction indices does not have the same dimension: ' + p0 + '-th index = ' + dim0 + ' but ' + p1 + '-th index = ' + dim1 + '.')
+    throw new TypeError('Contraction indices does not have the same dimension: ' +
+      p0 + '-th index = ' + dim0 + ' but ' + p1 + '-th index = ' + dim1 + '.')
   }
 
+  var contractedTensorData = null
   var tensorOrder = tensorDim.length
 
-  var varyingTensorDim = tensorDim.reduce(function (result, element, index) {
-    if ((index === p0) || (index === p1)) {
+  function varyingTensorDim (result, element, index) {
+    if ((index !== p0) && (index !== p1)) {
       result.push(element)
     }
 
     return result
-  }, [])
+  }
 
-  console.log('varyingTensorDim'+varyingTensorDim)
   function copyArray (result, element) {
     result.push(element)
 
     return result
   }
 
-  // Since it is a reduce callback, previous argument is necessary but ignored.
-  function sumOverVaryingTensorDim (previous, pairCombination) {
-    console.log(pairCombination)
-    var result = null
+  function sumOverVarying (tensorData) {
+    return function (result, varyingCombination) {
+      var firstCombination = varyingCombination.reduce(copyArray, [])
+      firstCombination.splice(p0, 0, 0)
+      firstCombination.splice(p1, 0, 0)
+      var firstIndex = multiDimArrayIndex(tensorDim, firstCombination)
+      var element = tensorData[firstIndex]
 
-    var index0 = pairCombination[0]
-    var index1 = pairCombination[1]
-
-    function addToResult (varyingCombination) {
-      console.log('varyingCombination'+varyingCombination)
-
-      var combination = varyingCombination.reduce(copyArray, [])
-      combination.splice(p0, 0, index0)
-      combination.splice(p1, 0, index1)
-      console.log('combination'+combination)
-
-      var index = multiDimArrayIndex(tensorDim, combination)
-
-      var element = tensorData[index]
-
-      if (result === null) {
-        result = element
-      } else {
-        result = addition(result, element)
+      for (var i = 1; i < dim0; i++) {
+        var combination = varyingCombination.reduce(copyArray, [])
+        combination.splice(p0, 0, i)
+        combination.splice(p1, 0, i)
+        var index = multiDimArrayIndex(tensorDim, combination)
+        element = addition(element, tensorData[index])
       }
-      debugger
+
+      result.push(element)
+
+      return result
     }
-
-    varyingTensorDim
-      .reduce(indicesPermutations, [])
-      .forEach(addToResult)
-
-    return result
   }
-
-  var contractedTensorData = [dim0, dim1].reduce(indicesPermutations, [])
-                                         .reduce(sumOverVaryingTensorDim, [])
 
   // If given tensor has order 2, the contracted tensor will be a scalar
   // so it makes sense to return an element, not an array.
+  // Furthermore, varyingTensorDim will be an empty array so generic algorithm
+  // will not even be triggered. Then it will be simply computed the trace.
   if (tensorOrder === 2) {
-//    return contractedTensorData[0]
+    var trace = tensorData[0]
+
+    for (var i = 1; i < dim0; i++) {
+      var combination = [i, i]
+      var index = multiDimArrayIndex(tensorDim, combination)
+      trace = addition(trace, tensorData[index])
+    }
+
+    contractedTensorData = trace
   } else {
-    return contractedTensorData
+    contractedTensorData = tensorDim.reduce(varyingTensorDim, [])
+                                    .reduce(indicesPermutations, [])
+                                    .reduce(sumOverVarying(tensorData), [])
   }
+
+  return contractedTensorData
 }
 
 module.exports = tensorContraction
