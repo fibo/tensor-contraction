@@ -10,6 +10,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "check-deps": "npm outdated",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "lint": "standard",
     "test": "tape test.js"
@@ -27,12 +28,13 @@
   },
   "pre-commit": [
     "lint",
-    "test"
+    "test",
+    "check-deps"
   ],
   "devDependencies": {
     "pre-commit": "^1.1.2",
     "standard": "^5.4.1",
-    "tape": "^4.3.0"
+    "tape": "^4.4.0"
   },
   "dependencies": {
     "indices-permutations": "^0.2.0",
