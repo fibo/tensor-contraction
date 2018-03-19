@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 var tensorContraction = require('./index')
 var test = require('tape')
 

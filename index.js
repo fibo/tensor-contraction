@@ -76,9 +76,10 @@ function tensorContraction (addition, indicesPair, tensorDim, tensorData) {
 
     return trace
   } else {
-    return tensorDim.reduce(varyingTensorDim, [])
-                    .reduce(indicesPermutations, [])
-                    .reduce(sumOverVarying(tensorData), [])
+    return tensorDim
+      .reduce(varyingTensorDim, [])
+      .reduce(indicesPermutations, [])
+      .reduce(sumOverVarying(tensorData), [])
   }
 }
 
