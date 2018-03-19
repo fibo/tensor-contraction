@@ -1,7 +1,7 @@
 {
   "name": "tensor-contraction",
   "description": "implements tensor contraction on a single mixed tensor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "http://npm.im/tensor-contraction",
   "author": {
     "name": "Gianluca Casati",
