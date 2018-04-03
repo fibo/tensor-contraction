@@ -13,7 +13,7 @@
     "check-deps": "npm outdated",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "lint": "standa",
-    "test": "tape test.js"
+    "test": "NODE_PATH=. tape test.js"
   },
   "repository": {
     "type": "git",

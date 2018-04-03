@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-var tensorContraction = require('./index')
+var tensorContraction = require('tensor-contraction')
 var test = require('tape')
 
 function addition (a, b) { return a + b }
